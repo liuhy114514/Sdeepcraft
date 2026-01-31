@@ -1,0 +1,7 @@
+{
+    "goods":[
+        {"000-wood": "wood"},
+        {"001-stone": "stone"},
+        {"002-water": "water"}
+    ]
+}

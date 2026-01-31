@@ -4,19 +4,6 @@
 using namespace std;
 // 写关于玩家保存数据的，及后面云端上传
 
-// 日志
-void saveLog() {
-	ofstream saveFile("Log.txt");
-	long long s = Log.size();
-	for (int i = 0; i < s; i++) {
-		saveFile << "[";
-		if (Log[i].type == 1) saveFile << "INFO";
-		else saveFile << "ERROR";
-		saveFile << " " << Log[i].Time << "]" ;
-		saveFile << " " << Log[i].Message << endl;
-	}
-}
-
 void saveGame(Survivor& player, string filename) {
 	ofstream saveFile(filename);
 	if (saveFile) {

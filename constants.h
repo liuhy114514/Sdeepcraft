@@ -76,11 +76,6 @@ struct Survivor {
 	Inventory inventory;
 	status state;
 };
-struct LOG {
-	short type;
-	string Time;
-	string Message;
-};
 
 struct World {
 	int day = 1;
@@ -127,7 +122,6 @@ char Shelter[5][6] = { // 字符串以\0结尾
 	"#####",
 };
 season The_Four_Seasons0[4] = { { 2.02, 5.07 },  { 5.07, 8.08  }, { 8.08, 11.08 }, { 11.08, 2.02 } };    // [a,b)
-vector<LOG> Log;
 World TW;
 
 // 函数
@@ -144,17 +138,4 @@ void showProgressBar(int value, int maxValue, string name) {
 	for (int i = bars; i < 20; i++) cout << "■";
 	setColor(15);
 	cout << " " << value << "/" << maxValue << endl;
-}
-string Log_time() { // 此时间戳被转换成了一个16字节的字符串
-	char nt[16];
-	string _nt;
-	time_t now = time(NULL);
-	tm lt = *localtime(&now);
-	int year = lt.tm_year + 1900;
-	int month = lt.tm_mon + 1;
-	int day = lt.tm_mday;
-	int hour = lt.tm_hour, minute = lt.tm_min;
-	sprintf(nt, "%d/%d/%d %d:%02d", year, month, day, hour, minute);
-	copy(nt, nt + 16, back_inserter(_nt));
-	return _nt;
 }

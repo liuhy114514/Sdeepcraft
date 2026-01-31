@@ -164,11 +164,7 @@ class GameSystem : public Event {
 					cout << "请输入玩家的名字：";
 					cin >> player.name;
 					Game();
-				} else {
-					Log.push_back({1, Log_time(), "游戏结束"});
-					saveLog();
-					exit(0);
-				}
+				} else exit(0);
 			}
 		}
 
@@ -204,8 +200,6 @@ class GameSystem : public Event {
 
 				cin >> choice;
 			}
-			
-			Log.push_back({1,Log_time(),"玩家选择事件"});
 			return stoi(choice);
 		}
 		double GameActions(Survivor& player) {

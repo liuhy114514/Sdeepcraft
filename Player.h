@@ -96,6 +96,9 @@ class Player {
 				player.feel.HungerLevel -= 3;
 				player.feel.ThirstLevel -= 2;
 				return 1;
+			} else {
+				cout << "²ÄÁÏ²»×ã";
+				return 0;
 			}
 		}
 		double Shelters() {
