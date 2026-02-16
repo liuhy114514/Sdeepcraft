@@ -104,7 +104,7 @@ struct World {
 	double date;
 	double temperature; //气温
 	double humidity; //湿度,须使用百分比
-	mapCell maps[256][256]; // 随机地图生成
+	mapCell maps[256][256] = {}; // 随机地图生成
 };
 
 const string USER_DATA_FILE = "user_data.txt";

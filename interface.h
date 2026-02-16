@@ -1,70 +1,17 @@
 #include <conio.h>
 #include "Event.h"
 #include "Player.h"
+#include "map.h"
 using namespace std;
 
 /*
 当实现图形界面的时候关闭输入，把画面留给easyx
 */
 
-class Map {
-	public:
-		void generate_map(MC gm[256][256]) {
-			srand(time(0));
-			for (int y = 0; y < 256; y++) {
-				for (int x = 0; x < 256; x++) {
-					gm[y][x].type = TypeMin + rand() % (TypeMax - TypeMin + 1);
-					gm[y][x].c = boime[gm[y][x].type].c;
-				}
-			}
-		}
-		void player_move(char m, Survivor &player){
-			switch (m) {
-			case 'w':case 'W':
-				switch (player.facing){
-					case UP:if (player.py > 0) player.py--;break;
-					case DOWN:if (player.py < 255) player.py++;break;
-					case LEFT:if (player.px > 0) player.px--;break;
-					case RIGHT:if (player.px < 255) player.px++;break;
-				}
-				break;
-			case 's':case 'S':
-				switch (player.facing){
-					case UP:if (player.py < 255) player.py++;break;
-					case DOWN:if (player.py > 0) player.py--;break;
-					case LEFT:if (player.px < 255) player.px++;break;
-					case RIGHT:if (player.px > 0) player.px--;break;
-				}
-				break;
-			case 'a':case 'A':player.facing = L[(getLR(player.facing, 0) + 1) % 4];break;
-			case 'd':case 'D':player.facing = R[(getLR(player.facing, 1) + 1) % 4];break;
-			}
-		}
-		void drawMap(MC gm[256][256], Survivor &player,int px, int py){
-			int fx = px + FC[player.facing][X];int fy = py + FC[player.facing][Y];
-			for (int y = max(0, py - 1); y <= min(py + 1, 255); y++){
-				for (int x = max(0, px - 5); x <= min(px + 5, 255); x++) { 
-					if (y == py && x == px) {
-						setColor(boime[PLAYER].color);
-						cout << boime[PLAYER].c;
-					}else if (y == fy && x == fx && fy >= 0 && fy < 256 && fx >= 0 && fx < 256){
-						cout << "█";
-						player.playerFacing = boime[gm[y][x].type].name;
-					}else if((y == fy && x == fx) && !(fy >= 0 && fy < 256 && fx >= 0 && fx < 256)){
-						player.playerFacing = boime[AIR].name;
-					}else {
-						setColor(gm[y][x].color);
-						cout << gm[y][x].c;
-					}
-				}
-				cout << endl;
-			}
-		}
-};
-
 //这是游戏系统，给玩家看的
-class GameSystem : public Event, public Map {
+class GameSys : public Event{
 	private:
+		Map map = Map();
 		int playerx = 0, playery = 0; //当然，这里的player是光标
 		bool isGameStart = false; 	//检测游戏是否开始
 		double DrawAchievement(Survivor& pvp_dalao) {
@@ -202,7 +149,7 @@ class GameSystem : public Event, public Map {
 		}
 
 		string GameChoice(Survivor& player) {
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.ignore();
 			string choice;
 			system("cls");
 			setColor(14);
@@ -214,7 +161,7 @@ class GameSystem : public Event, public Map {
 
 			cout << endl;
 			
-			drawMap(TW.maps, player, player.px, player.py);
+			map.drawMap(TW.maps, player, player.px, player.py);
 
 			setColor(11);
 			cout << "资源：木材:" << player.inventory.wood
@@ -262,7 +209,7 @@ class GameSystem : public Event, public Map {
 				isGameStart = 0;
 				Game();
 			}else if(temp == "w" || temp == "W" || temp == "s" || temp == "S" || temp == "a" || temp == "A" || temp == "d" || temp == "D"){
-				player_move(temp[0], player);
+				map.player_move(temp[0], player);
 			}else {
 				temp1 = 1;
 				cout << "输入错误";
@@ -286,7 +233,7 @@ class GameSystem : public Event, public Map {
 			if (player.state.first){
 				if (!isGameStart) StartChoice(player);
 				if (player.state.first) {
-					generate_map(TW.maps);
+					map.generate_map(TW.maps);
 					player.state.first = 0;
 				}
 			}

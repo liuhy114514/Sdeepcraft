@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
 	try {
-		GameSystem gs = GameSystem();
+		GameSys gs = GameSys();
 		gs.Game();
 	} catch(...){
 		cout << "ÓÎÏ·³ö´í";
